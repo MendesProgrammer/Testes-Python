@@ -127,8 +127,17 @@ while True:
     # Mostra um manual básico com as principais intruções
     elif sel[0] == 'ls':
         print(dado['simbolo1'] * dado['linha1'])
-        print('<<<Lista de comandos>>>\nad -> adicionar\nts -> teste número\ns1-t -> tamanho linha\ns2-t -> tamanho linha\ns1-s -> caractere da linha\ns2-s -> caractere a linha\nsair')
+        print('<<<Lista de comandos>>>\nad -> adicionar\nts -> teste número\ns1-t -> tamanho linha\ns2-t -> tamanho linha\ns1-s -> caractere da linha\ns2-s -> caractere a linha\ndicio -> Realiza a tradução\nsair')
         print(dado['simbolo1'] * dado['linha1'])
+
+    # Procura um cartão pelo valor digitado e mostra o seu resultado
+    elif len(sel) == 2 and sel[0] == 'dicio':
+        for d in dado["resultado"]:
+            if d[0] == sel[1]:
+                print(f'Tradução -> {d[1]}')
+
+            elif d[1] == sel[1]:
+                print(f'Tradução -> {d[0]}')
 
     # Caso nenhuma instrução anterior seja atendida
     else:
