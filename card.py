@@ -63,7 +63,12 @@ while True:
             por = str(input('Palavra/frase em idioma 2(-v voltar) > ')).strip().lower()
             if por == '-v':
                 break
-            dado['resultado'].append([ing, por])
+            conf = 0
+            while conf != 's' and conf != 'n':
+                conf = str(input('Confirmar? (s/n) ')).strip().lower()
+                if conf == 's':
+                    dado['resultado'].append([ing, por])
+                    salvar('card', dado)
         print(dado['simbolo2'] * dado['linha2'])
 
     # Faz um teste com um número indicado pelo usuário de itens
