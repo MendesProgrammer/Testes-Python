@@ -1,6 +1,9 @@
 import json
 from random import shuffle
 
+# Nome do arquivo
+arquivo = 'card'
+
 def salvar(nome='arquivo', dado=[]):
     '''Salva objetos em um arquivo .json'''
     with open(f'{nome}.json', 'w') as file:
@@ -17,7 +20,7 @@ def ler(nome='arquivo'):
 
 # Executa o arquivo ou cria caso não exista
 try:
-    dado = ler('card')
+    dado = ler(arquivo)
 except:
     dado = {
         'resultado':[],
@@ -26,7 +29,7 @@ except:
         'linha1':50,
         'linha2':50
         }
-    salvar('card', dado)
+    salvar(arquivo, dado)
 
 print(dado['simbolo1'] * dado['linha1'])
 
@@ -68,7 +71,7 @@ while True:
                 conf = str(input('Confirmar? (s/n) ')).strip().lower()
                 if conf == 's':
                     dado['resultado'].append([ing, por])
-                    salvar('card', dado)
+                    salvar(arquivo, dado)
         print(dado['simbolo2'] * dado['linha2'])
 
     # Faz um teste com um número indicado pelo usuário de itens
@@ -151,4 +154,4 @@ while True:
     print(dado['simbolo1'] * dado['linha1'])
 
     # Mantém o arquivo principal sempre atualizado
-    salvar('card', dado)
+    salvar(arquivo, dado)
