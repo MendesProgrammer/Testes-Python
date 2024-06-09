@@ -57,10 +57,10 @@ while True:
     if len(sel) == 1 and sel[0] == 'ad':
         while True:
             print(dado['simbolo2'] * dado['linha2'])
-            ing = str(input('Palavra/frase em idioma 1(-v voltar) > ')).strip().lower()
+            ing = str(input('Palavra/frase na frente(-v voltar) > ')).strip().lower()
             if ing == '-v':
                 break
-            por = str(input('Palavra/frase em idioma 2(-v voltar) > ')).strip().lower()
+            por = str(input('Palavra/frase no verso(-v voltar) > ')).strip().lower()
             if por == '-v':
                 break
             conf = 0
@@ -79,15 +79,20 @@ while True:
             if 0 < n1 <= len(dado['resultado']):
                 tra = dado['resultado'][0:n1]
                 shuffle(tra)
+                acerto = erro = 0
                 for c in range(0, n1):
                     print(dado['simbolo2'] * dado['linha2'])
                     print(f'{c+1} -> {tra[c][0]}')
                     tr = str(input('Tradução -> ')).strip().lower()
                     if tr == tra[c][1]:
                         print('Resposta correta')
+                        acerto += 1
                     else:
-                        print(f'Resposta incorrta, correção: {tra[c][0]}')
+                        print(f'Resposta incorrta, correção: {tra[c][1]}')
+                        erro += 1
                 print(dado['simbolo2'] * dado['linha2'])
+                print(f'Número de acertos: {acerto}')
+                print(f'Número de erros: {erro}')
                 print(dado['simbolo2'] * dado['linha2'])
 
         except:
