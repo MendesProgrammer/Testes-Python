@@ -23,11 +23,12 @@ try:
     dado = ler(arquivo)
 except:
     dado = {
-        'resultado':[],
-        'simbolo1':'=',
-        'simbolo2':'-',
-        'linha1':50,
-        'linha2':50
+        'resultado' : [],
+        'reforce' : [],
+        'simbolo1' : '=',
+        'simbolo2' : '-',
+        'linha1' : 50,
+        'linha2' : 50
         }
     salvar(arquivo, dado)
 
@@ -37,6 +38,7 @@ print(dado['simbolo1'] * dado['linha1'])
 while True:
     # Indicador da quantidade de palavra/tradução salvas
     print(f'Quantidade de palavras salvas : {len(dado["resultado"])}')
+    print(f'Quantidade de itens de reforço: {len(dado["reforce"])}')
 
     # Entrada de dados do usuário, comandos principais
     sec = str(input('Digite o comando(ls manual básico) >>> ')).strip().lower()
@@ -92,6 +94,12 @@ while True:
                         acerto += 1
                     else:
                         print(f'Resposta incorrta, correção: {tra[c][1]}')
+                        opcao = 0
+                        while opcao != 's' and opcao != 'n':
+                            opcao = str(input('Deseja adicionar este item a lista de reforço? (s/n) ')).strip().lower()
+                            if opcao == 's':
+                                dado['reforce'].append(tra[c])
+                                print('Salvo com sucesso.')
                         erro += 1
                 print(dado['simbolo2'] * dado['linha2'])
                 print(f'Número de acertos: {acerto}')
@@ -135,7 +143,9 @@ while True:
     # Mostra um manual básico com as principais intruções
     elif sel[0] == 'ls':
         print(dado['simbolo1'] * dado['linha1'])
-        print('<<<Lista de comandos>>>\nad -> adicionar\nts -> teste número\ns1-t -> tamanho linha\ns2-t -> tamanho linha\ns1-s -> caractere da linha\ns2-s -> caractere a linha\ndicio -> Realiza a tradução\nsair')
+        print('<<<Lista de comandos>>>\nad -> adicionar\nts -> teste número')
+        print('s1-t -> tamanho linha\ns2-t -> tamanho linha\ns1-s -> caractere da linha')
+        print('s2-s -> caractere a linha\ndicio -> realiza a tradução\nre -> teste de reforço\nsair')
         print(dado['simbolo1'] * dado['linha1'])
 
     # Procura um cartão pelo valor digitado e mostra o seu resultado
@@ -146,6 +156,42 @@ while True:
 
             elif d[1] == sel[1]:
                 print(f'Tradução -> {d[0]}')
+
+    # Para testar apenas os itens que se tenha mais dificuldade
+    elif len(sel) == 2 and sel[0] == 're':
+        try:
+            n1 = int(sel[1])
+            if 0 < n1 <= len(dado['reforce']):
+                teste = dado['reforce'][0:n1]
+                shuffle(tra)
+                acerto = erro = 0
+                for c in range(0, n1):
+                    print(dado['simbolo2'] * dado['linha2'])
+                    print(f'{c+1} -> {teste[c][0]}')
+                    tr = str(input('Tradução -> ')).strip().lower()
+                    if tr == teste[c][1]:
+                        print('Resposta correta')
+                        opcao = 0
+                        while opcao != 's' and opcao != 'n':
+                            opcao = str(input('Deseja retirar este item a lista de reforço? (s/n) ')).strip().lower()
+                            if opcao == 's':
+                                for indice, item in enumerate(dado['reforce']):
+                                    if item == teste[c]:
+                                        break
+                                del dado['reforce'][indice]
+                        acerto += 1
+
+                    else:
+                        print(f'Resposta incorrta, correção: {teste[c][1]}')
+                        erro += 1
+
+                print(dado['simbolo2'] * dado['linha2'])
+                print(f'Número de acertos: {acerto}')
+                print(f'Número de erros: {erro}')
+                print(dado['simbolo2'] * dado['linha2'])
+
+        except:
+            None
 
     # Caso nenhuma instrução anterior seja atendida
     else:
