@@ -18,6 +18,50 @@ def ler(nome='arquivo'):
     return dado
 
 
+# Função que realiza a comparação dos itens
+def verificar(dado=[], comando='ts'):
+    tra = dado['resultado'][0:n1]
+    shuffle(tra)
+    acerto = erro = 0
+
+    for c in range(0, n1):
+
+        print(dado['simbolo2'] * dado['linha2'])
+        print(f'{c+1} -> {tra[c][0]}')
+        tr = str(input('Tradução -> ')).strip().lower()
+        if tr == tra[c][1]:
+            print('Resposta correta')
+            acerto += 1
+
+            if comando == 're':
+                opcao = 0
+                while opcao != 's' and opcao != 'n':
+                    opcao = str(input('Deseja retirar este item a lista de reforço? (s/n) ')).strip().lower()
+                    if opcao == 's':
+                        for indice, item in enumerate(dado['reforce']):
+                            if item == tra[c]:
+                                break
+                        del dado['reforce'][indice]
+        else:
+            print(f'Resposta incorrta, correção: {tra[c][0]}')
+
+            if comando == 'ts':
+                opcao = 0
+                while opcao != 's' and opcao != 'n':
+                    opcao = str(input('Deseja adicionar este item a lista de reforço? (s/n) ')).strip().lower()
+                    if opcao == 's':
+                        dado['reforce'].append(tra[c])
+
+            erro += 1
+
+    print(dado['simbolo2'] * dado['linha2'])
+    print(f'Número de acertos: {acerto}')
+    print(f'Número de erros: {erro}')
+    print(dado['simbolo2'] * dado['linha2'])
+
+    salvar(f'{arquivo}.json', dado)
+
+
 # Executa o arquivo ou cria caso não exista
 try:
     dado = ler(arquivo)
@@ -82,29 +126,7 @@ while True:
         try:
             n1 = int(sel[1])
             if 0 < n1 <= len(dado['resultado']):
-                tra = dado['resultado'][0:n1]
-                shuffle(tra)
-                acerto = erro = 0
-                for c in range(0, n1):
-                    print(dado['simbolo2'] * dado['linha2'])
-                    print(f'{c+1} -> {tra[c][0]}')
-                    tr = str(input('Tradução -> ')).strip().lower()
-                    if tr == tra[c][1]:
-                        print('Resposta correta')
-                        acerto += 1
-                    else:
-                        print(f'Resposta incorrta, correção: {tra[c][1]}')
-                        opcao = 0
-                        while opcao != 's' and opcao != 'n':
-                            opcao = str(input('Deseja adicionar este item a lista de reforço? (s/n) ')).strip().lower()
-                            if opcao == 's':
-                                dado['reforce'].append(tra[c])
-                                print('Salvo com sucesso.')
-                        erro += 1
-                print(dado['simbolo2'] * dado['linha2'])
-                print(f'Número de acertos: {acerto}')
-                print(f'Número de erros: {erro}')
-                print(dado['simbolo2'] * dado['linha2'])
+                verificar(dado)
 
         except:
             None
@@ -162,33 +184,7 @@ while True:
         try:
             n1 = int(sel[1])
             if 0 < n1 <= len(dado['reforce']):
-                teste = dado['reforce'][0:n1]
-                shuffle(tra)
-                acerto = erro = 0
-                for c in range(0, n1):
-                    print(dado['simbolo2'] * dado['linha2'])
-                    print(f'{c+1} -> {teste[c][0]}')
-                    tr = str(input('Tradução -> ')).strip().lower()
-                    if tr == teste[c][1]:
-                        print('Resposta correta')
-                        opcao = 0
-                        while opcao != 's' and opcao != 'n':
-                            opcao = str(input('Deseja retirar este item a lista de reforço? (s/n) ')).strip().lower()
-                            if opcao == 's':
-                                for indice, item in enumerate(dado['reforce']):
-                                    if item == teste[c]:
-                                        break
-                                del dado['reforce'][indice]
-                        acerto += 1
-
-                    else:
-                        print(f'Resposta incorrta, correção: {teste[c][1]}')
-                        erro += 1
-
-                print(dado['simbolo2'] * dado['linha2'])
-                print(f'Número de acertos: {acerto}')
-                print(f'Número de erros: {erro}')
-                print(dado['simbolo2'] * dado['linha2'])
+                verificar(dado, 're')
 
         except:
             None
