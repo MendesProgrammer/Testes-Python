@@ -1,5 +1,5 @@
 import json
-from random import shuffle
+from random import shuffle, choice
 
 # Nome do arquivo
 arquivo = 'card'
@@ -19,9 +19,30 @@ def ler(nome='arquivo'):
 
 
 # Função que realiza a comparação dos itens
-def verificar(dado=[], comando='ts'):
-    tra = dado['resultado'][0:n1]
-    shuffle(tra)
+def verificar(dado=[], comando='ts', quantidade=1):
+    #tra = dado['resultado'][0:quantidade]
+    #shuffle(tra)
+    tra = []
+    if comando == 'ts':
+        while len(tra) < quantidade:
+            item = choice(dado['resultado'])
+            if item not in dado['recente']:
+                dado['recente'].append(item)
+                tra.append(item)
+
+            elif len(dado['recente']) == len(dado['resultado']):
+                dado['recente'] = []
+
+    elif comando == 're':
+        while len(tra) < quantidade:
+            item = choice(dado['reforce'])
+            if item not in dado['recente']:
+                dado['recente'].append(item)
+                tra.append(item)
+
+            elif len(dado['recente']) == len(dado['reforce']):
+                dado['recente'] = []
+                
     acerto = erro = 0
 
     for c in range(0, n1):
@@ -69,6 +90,7 @@ except:
     dado = {
         'resultado' : [],
         'reforce' : [],
+        'recente' : [],
         'simbolo1' : '=',
         'simbolo2' : '-',
         'linha1' : 50,
