@@ -20,32 +20,28 @@ def ler(nome='arquivo'):
 
 # Função que realiza a comparação dos itens
 def verificar(dado=[], comando='ts', quantidade=1):
-    #tra = dado['resultado'][0:quantidade]
-    #shuffle(tra)
     tra = []
     if comando == 'ts':
-        while len(tra) < quantidade:
-            item = choice(dado['resultado'])
-            if item not in dado['recente_resultado']:
-                dado['recente_resultado'].append(item)
-                tra.append(item)
-
-            elif len(dado['recente_resultado']) == len(dado['resultado']):
-                dado['recente_resultado'] = []
+        p1 = dado['recente_resultado']
+        p2 = p1 + quantidade
+        if p2 > len(dado['resultado']):
+            p1 = 0
+            p2 = p2 - len(dado['resultado'])
+        dado['recente_resultado'] = p2
+        tra = dado['resultado'][p1:p2]
 
     elif comando == 're':
-        while len(tra) < quantidade:
-            item = choice(dado['reforce'])
-            if item not in dado['recente_reforce']:
-                dado['recente_reforce'].append(item)
-                tra.append(item)
-
-            elif len(dado['recente_reforce']) == len(dado['reforce']):
-                dado['recente_reforce'] = []
+        p1 = dado['recente_reforce']
+        p2 = p1 + quantidade
+        if p2 > len(dado['reforce']):
+            p1 = 0
+            p2 = p2 - len(dado['reforce'])
+        dado['recente_reforce'] = p2
+        tra = dado['reforce'][p1:p2]
                 
     acerto = erro = 0
 
-    for c in range(0, n1):
+    for c in range(0, quantidade):
 
         print(dado['simbolo2'] * dado['linha2'])
         print(f'{c+1} -> {tra[c][0]}')
@@ -80,7 +76,7 @@ def verificar(dado=[], comando='ts', quantidade=1):
     print(f'Número de erros: {erro}')
     print(dado['simbolo2'] * dado['linha2'])
 
-    salvar(f'{arquivo}.json', dado)
+    salvar(f'{arquivo}', dado)
 
 
 # Executa o arquivo ou cria caso não exista
@@ -90,8 +86,8 @@ except:
     dado = {
         'resultado' : [],
         'reforce' : [],
-        'recente_resultado' : [],
-        'recente_reforce': [],
+        'recente_resultado' : 0,
+        'recente_reforce': 0,
         'simbolo1' : '=',
         'simbolo2' : '-',
         'linha1' : 50,
